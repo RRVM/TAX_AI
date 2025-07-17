@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Comparison Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aptos+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Aptos Display', Arial, sans-serif;
+            background: #f8fbff;
+            color: #1a237e;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 1.5em;
+            text-align: center;
+        }
+        .top-row {
+            display: flex;
+            flex-direction: row;
+            gap: 2em;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 2em;
+        }
+        .card, .summary-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(26,35,126,0.08);
+            padding: 2em 1.2em;
+            flex: 1 1 0;
+            min-width: 220px;
+            max-width: 340px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05em;
+        }
+        .summary-card {
+            color: #374785;
+            align-items: flex-start;
+            font-size: 1.05em;
+        }
+        .summary-card table {
+            width: 100%;
+            margin-top: 0.7em;
+            font-size: 1em;
+            border-collapse: collapse;
+            background: #f8fbff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(26,35,126,0.06);
+        }
+        .summary-card td {
+            padding: 0.55em 0.7em;
+            border-bottom: 1px solid #e3eaf5;
+        }
+        .summary-card tr:last-child td {
+            border-bottom: none;
+        }
+        .summary-card tr:nth-child(even) {
+            background: #e3f0ff;
+        }
+        .summary-card tr:hover {
+            background: #bbdefb;
+            transition: background 0.2s;
+        }
+        .summary-card td:first-child {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        .summary-card td:last-child {
+            text-align: right;
+            font-weight: 500;
+        }
+        .card.selected {
+            border: 2px solid #1976d2;
+            background: #bbdefb;
+        }
+        .regime-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 0.3em;
+        }
+        .tax-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 0.3em;
+        }
+        .label {
+            font-size: 0.98em;
+            color: #374785;
+        }
+        .ai-section {
+            margin: 0 auto;
+            margin-bottom: 2em;
+            background: #f0f4fa;
+            border-radius: 10px;
+            padding: 1.5em 1.5em 2em 1.5em;
+            max-width: 1100px;
+            width: 100%;
+        }
+        .ai-question {
+            font-size: 1.08em;
+            color: #1976d2;
+            font-weight: 600;
+            margin-bottom: 0.7em;
+        }
+        .ai-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7em;
+            margin-bottom: 1em;
+        }
+        .ai-form textarea {
+            font-size: 1em;
+            border-radius: 8px;
+            border: 1px solid #b0bec5;
+            padding: 0.6em;
+            min-height: 48px;
+            resize: vertical;
+        }
+        .ai-btn {
+            background:#1976d2;
+            color:#fff;
+            font-size:1.05rem;
+            font-weight:600;
+            border:none;
+            border-radius:8px;
+            padding:0.6em 1.5em;
+            cursor:pointer;
+            transition:background 0.2s;
+            margin-top: 1em;
+            align-self: flex-end;
+        }
+        .ai-btn:hover {
+            background: #1565c0;
+        }
+        .ai-suggestions {
+            background: #e3f0ff;
+            border-radius: 8px;
+            padding: 0.8em 1em;
+            margin-top: 0.7em;
+            color: #1a237e;
+            font-size: 1.02em;
+        }
+        @media (max-width: 1100px) {
+            .top-row, .ai-section {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 900px) {
+            .top-row {
+                flex-direction: column;
+                gap: 1em;
+            }
+            .card, .summary-card {
+                max-width: 100%;
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Tax Comparison Results</h1>
+    <div class="top-row">
+        <div class="summary-card">
+            <strong>Your Data:</strong>
+            <table>
+                <tr><td>Gross Salary</td><td>₹{{ data.gross_salary }}</td></tr>
+                <tr><td>Basic Salary</td><td>₹{{ data.basic_salary }}</td></tr>
+                <tr><td>HRA Received</td><td>₹{{ data.hra_received }}</td></tr>
+                <tr><td>Rent Paid</td><td>₹{{ data.rent_paid }}</td></tr>
+                <tr><td>80C</td><td>₹{{ data.deduction_80c }}</td></tr>
+                <tr><td>80D</td><td>₹{{ data.deduction_80d }}</td></tr>
+                <tr><td>Standard Deduction</td><td>₹{{ data.standard_deduction }}</td></tr>
+                <tr><td>Professional Tax</td><td>₹{{ data.professional_tax }}</td></tr>
+                <tr><td>TDS</td><td>₹{{ data.tds }}</td></tr>
+                <tr><td>Selected Regime</td><td><b>{{ selected_regime|capitalize }}</b></td></tr>
+            </table>
+        </div>
+        <div class="card {% if selected_regime == 'old' %}selected{% endif %}">
+            <div class="regime-title">Old Regime</div>
+            <div class="tax-amount">₹{{ tax_old_regime }}</div>
+            <div class="label">Tax Payable</div>
+        </div>
+        <div class="card {% if selected_regime == 'new' %}selected{% endif %}">
+            <div class="regime-title">New Regime</div>
+            <div class="tax-amount">₹{{ tax_new_regime }}</div>
+            <div class="label">Tax Payable</div>
+        </div>
+    </div>
+    <div class="ai-section">
+        {% if not ai_question %}
+        <form method="POST" class="ai-btn-form">
+            <input type="hidden" name="get_ai" value="1">
+            <button type="submit" class="ai-btn">Get AI Suggestions</button>
+        </form>
+        {% endif %}
+        {% if ai_question %}
+            <div class="ai-question">{{ ai_question }}</div>
+            <form method="POST" class="ai-form">
+                <textarea name="user_answer" placeholder="Type your answer here..." required>{{ user_answer or '' }}</textarea>
+                <input type="hidden" name="ai_question" value="{{ ai_question }}">
+                <button type="submit" class="ai-btn">Get Suggestions</button>
+            </form>
+        {% endif %}
+        {% if ai_suggestions %}
+            <div class="ai-suggestions">
+                <strong>Personalized Suggestions:</strong><br>
+                {{ ai_suggestions|safe }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html> 
